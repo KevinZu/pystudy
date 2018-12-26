@@ -4,6 +4,7 @@ import numpy as np
 import cv2 
 import sys
 import time 
+import argparse
 
 
 def SaveFile():
@@ -95,6 +96,46 @@ def FaceDec():
   cv2.destroyAllWindows()
 
 
-SaveFile()
+def face_detector():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-v", "--video", help="path to the video file")
+    ap.add_argument("-a", "--min-area", type=int, default=500, help="minimum area size")
+    args = vars(ap.parse_args())
+ 
+# 如果video参数为None，那么我们从摄像头读取数据
+    if args.get("video", None) is None:
+        cap = cv2.VideoCapture("rtsp://admin:ABC_123456@172.17.208.150:554/Streaming/Channels/101?transportmode=unicast")
+        time.sleep(0.25)
+ 
+# 否则我们读取一个视频文件
+    else:
+        cap = cv2.VideoCapture(args["video"])
+
+    classfier=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+    color=(0,255,0)
+
+    while(cap.isOpened()):
+        ret, frame = cap.read()
+        if ret==True:
+          grey=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+          faceRects = classfier.detectMultiScale(grey, scaleFactor = 1.2, minNeighbors = 3, minSize = (32, 32))
+          if len(faceRects) > 0:
+            for faceRect in faceRects:
+              x, y, w, h = faceRect  #5画图   
+              cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 3)
+    
+          cv2.imshow('faceDec',frame) 
+          if cv2.waitKey(1) & 0xFF == ord('q'): 
+            break 
+        else: 
+          break 
+# Release everything if job is finished 
+
+    cap.release() 
+
+    cv2.destroyAllWindows()
+
+#SaveFile()
 #CatVideo()
 #FaceDec()
+face_detector()
