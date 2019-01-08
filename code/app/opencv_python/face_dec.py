@@ -135,7 +135,7 @@ def face_detector():
 
     cv2.destroyAllWindows()
 
-#SaveFile()
+SaveFile()
 #CatVideo()
 #FaceDec()
-face_detector()
+#face_detector()
