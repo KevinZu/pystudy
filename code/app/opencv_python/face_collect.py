@@ -47,7 +47,7 @@ def getfacefromcamera(outdir):
     createdir(outdir)
     #camera = cv2.VideoCapture(0)
     #camera = cv2.VideoCapture("rtsp://admin:ABC_123456@172.17.208.150:554/Streaming/Channels/101?transportmode=unicast")
-    camera = cv2.VideoCapture('tangjie.avi')
+    camera = cv2.VideoCapture('zukeqiang.avi')
     haar = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
     n = 1
     while 1:
